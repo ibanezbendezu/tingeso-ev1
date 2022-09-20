@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Sueldo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+    <div th:replace="fragments/navigation :: navigation"></div>
+    <div class="container mt-5 mb-5">
+        <button type="button" class="btn btn-primary" onclick="history.go(-1);">Volver</button>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center lh-1 mb-5">
+                    <h5 class="fw-bold mb-2">Planilla de Sueldos</h5>
+                </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="row justify-content-between">
+                            <div class="col-md-5">
+                                <div> <span class="fw-bolder">Rut</span>
+                                    <small class="ms-3">
+                                        <span th:text="${wage.employee.rut}">
+                                    </span></small>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div> <span class="fw-bolder">Nombre</span>
+                                    <span class="ms-3" th:text="${wage.employee.name}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-between">
+                            <div class="col-md-5">
+                                <div> <span class="fw-bolder">Categoría</span>
+                                    <small class="ms-3">
+                                        <span th:text="${wage.employee.category}"></span>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div> <span class="fw-bolder">Años de servicio</span>
+                                    <small class="ms-3">
+                                        <span th:text="${wage.employee.service_years}"></span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-between">
+                            <div class="col-md-5">
+                                <div> <span class="fw-bolder">Fecha</span>
+                                    <small class="ms-3">
+                                        <span th:text="${wage.date}"></span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="mt-4 table table-bordered">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th scope="col">Detalles</th>
+                                <th scope="col">Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-active">
+                                <th scope="row">Sueldo fijo mensual</th>
+                                <td th:text="${wage.detail[0].getAmount()}"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Bonificación años de servicio</th>
+                                <td class="text-primary" th:text="${wage.detail[1].getAmount()}"></td>
+                            </tr>
+                            <tr class="border-top">
+                                <th scope="row">Bonificación por horas extra</th>
+                                <td class="text-primary" th:text="${wage.detail[2].getAmount()}"></td>
+                            </tr>
+                            <tr class="border-top">
+                                <th scope="row">Descuento por atrasos</th>
+                                <td class="text-danger" th:text="- ${wage.detail[3].getAmount()}"></td>
+                            </tr>
+                            <tr class="border-top">
+                                <th scope="row">Descuento por inasistencias</th>
+                                <td class="text-danger" th:text="- ${wage.detail[4].getAmount()}"></td>
+                            </tr>
+                            <tr class="border-top table-active">
+                                <th scope="row">Sueldo bruto</th>
+                                <td th:text="${wage.detail[5].getAmount()}"></td>
+                            </tr>
+                            <tr class="border-top">
+                                <th scope="row">Cotización Previsional</th>
+                                <td class="text-danger" th:text="- ${wage.detail[6].getAmount()}"></td>
+                            </tr>
+                            <tr class="border-top">
+                                <th scope="row">Cotización Salud</th>
+                                <td class="text-danger" th:text="- ${wage.detail[7].getAmount()}"></td>
+                            </tr>
+                            <tr class="table-success border-top">
+                                <th scope="row">Sueldo líquido</th>
+                                <td class="fw-bold" th:text="${wage.detail[8].getAmount()}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <br>
+                        <span class="fw-bold">Monto sueldo final :
+                            <span class="fw-normal" th:text="${wage.detail[8].getAmount()}"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <div class="d-flex flex-column mt-2">
+                        <small> Por Aarón Ibáñez </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
