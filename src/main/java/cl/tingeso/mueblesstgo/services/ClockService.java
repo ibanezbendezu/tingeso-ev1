@@ -116,10 +116,8 @@ public class ClockService {
                             workedDayRepository.save(d);
                         });
             }
-
             logg.info("data saved");
-        } catch (
-                IOException e) {
+        } catch (IOException e) {
             System.err.println("error reading marks from file " + filename);
             e.printStackTrace();
         }

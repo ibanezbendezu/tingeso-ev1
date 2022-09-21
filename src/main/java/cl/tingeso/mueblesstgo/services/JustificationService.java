@@ -29,19 +29,16 @@ public class JustificationService {
 
             if (Objects.nonNull(employee)) {
                 JustificationEntity newJust = new JustificationEntity();
-
                 newJust.setEmployee(employee);
 
                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 LocalDate date = LocalDate.parse(request.get("date").toString(), dateFormatter);
 
                 newJust.setJustification_date(date);
-
                 newJust.setEmployee_rut(request.get("rut").toString());
-
                 newJust.setDetails(request.get("details").toString());
 
-                    justificationRepository.save(newJust);
+                justificationRepository.save(newJust);
             }
             logg.info("data saved");
         }

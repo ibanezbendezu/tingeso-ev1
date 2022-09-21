@@ -10,8 +10,4 @@ import org.springframework.stereotype.Repository;
 public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> {
 
     public EmployeeEntity findByRut(String rut);
-
-    @Query(value = "select * from employee as e where e.name = :name", nativeQuery = true)
-    EmployeeEntity findByNameNativeQuery(@Param("name") String name);
-
 }

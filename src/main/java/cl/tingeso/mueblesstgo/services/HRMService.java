@@ -77,11 +77,9 @@ public class HRMService {
     // < 5: 0%, >= 5: 5%, >= 10: 8%, >= 15: 11%, >= 20: 14% >= 25: 17%
     public double serviceYearsBonus(EmployeeEntity employee) {
 
-        double serviceYearsBonus;
+        double serviceYearsBonus = 0;
 
-        if (serviceYears(employee.getHire_date()) < 5){
-            serviceYearsBonus = 0;
-        } else if (serviceYears(employee.getHire_date()) >= 5) {
+        if (serviceYears(employee.getHire_date()) >= 5) {
             serviceYearsBonus = employee.getCategory().getFixed_monthly_wage() * 0.05;
         } else if (serviceYears(employee.getHire_date()) >= 10) {
             serviceYearsBonus = employee.getCategory().getFixed_monthly_wage() * 0.08;
@@ -89,7 +87,7 @@ public class HRMService {
             serviceYearsBonus = employee.getCategory().getFixed_monthly_wage() * 0.11;
         } else if (serviceYears(employee.getHire_date()) >= 20) {
             serviceYearsBonus = employee.getCategory().getFixed_monthly_wage() * 0.14;
-        } else {
+        } else if (serviceYears(employee.getHire_date()) >= 25) {
             serviceYearsBonus = employee.getCategory().getFixed_monthly_wage() * 0.17;
         }
 
@@ -192,14 +190,12 @@ public class HRMService {
 
 
 
-    public double serviceYears(LocalDate from) {
+    public long serviceYears(LocalDate from) {
 
         LocalDate to = LocalDate.now();
         Period period = Period.between(from, to);
 
-        double years = period.getYears() + (period.getMonths() / 12.0) + (period.getDays() / 365.0);
-
-        return years;
+        return period.getYears() + (period.getMonths() / 12) + (period.getDays() / 365);
     }
 
     public double totalOvertime(EmployeeEntity employee) {
@@ -208,7 +204,7 @@ public class HRMService {
 
         if (employee.getWorked_days() != null) {
             totalOvertime = employee.getWorked_days().stream().mapToDouble(WorkedDayEntity::getOvertime).sum();
-        } else { return totalOvertime; }
+        }
 
         return totalOvertime;
     }

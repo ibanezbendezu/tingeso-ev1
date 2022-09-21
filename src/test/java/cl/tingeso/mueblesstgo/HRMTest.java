@@ -21,7 +21,7 @@ public class HRMTest {
         LocalDate hire_date = LocalDate.parse("2020/04/22", dateFormatter);
 
         double serviceYears = HRM.serviceYears(hire_date);
-        assertEquals(2.41, serviceYears, 0.0);
+        assertEquals(2, serviceYears, 0.0);
     }
 
     @Test

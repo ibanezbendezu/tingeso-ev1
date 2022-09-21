@@ -29,19 +29,16 @@ public class ApprovalService {
 
             if (Objects.nonNull(employee)) {
                 ApprovalEntity newJust = new ApprovalEntity();
-
                 newJust.setEmployee(employee);
 
                 DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 LocalDate date = LocalDate.parse(request.get("date").toString(), dateFormatter);
 
                 newJust.setApproval_date(date);
-
                 newJust.setEmployee_rut(request.get("rut").toString());
-
                 newJust.setDetails(request.get("details").toString());
 
-                    approvalRepository.save(newJust);
+                approvalRepository.save(newJust);
             }
             logg.info("data saved");
         }
