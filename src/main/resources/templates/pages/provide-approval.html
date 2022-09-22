@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title>Ingresar Aprovación</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -10,21 +10,25 @@
     <div th:replace="fragments/navigation :: navigation"></div>
     <div class="container mt-5 mb-5">
         <h5 class="fw-bold mb-2">Ingresar aprobación</h5>
-        <form th:action="@{/save-approval}" method="post">
+        <form action="#" th:action="@{/approval/}" th:object="${approval}" method="post">
             <div class="mb-3 mt-3">
                 <label for="rut">Rut Empleado</label>
-                <input type="text" class="form-control" id="rut" placeholder="Ingresa tu rut" name="rut">
+                <input required type="text" th:field="*{employee_rut}" class="form-control" id="rut" placeholder="Ingresa tu rut"/>
             </div>
-            <div class="mb-3 mt-3">
-                <label for="date">Fecha</label>
-                <input type="date" class="form-control" id="date" name="date">
+            <div th:if="${error}">
+                <div class="text-danger" th:text="${error}"></div>
             </div>
 
             <div class="mb-3 mt-3">
+                <label for="date">Fecha</label>
+                <input required type="date" th:field="*{approval_date}" class="form-control" id="date">
+            </div>
+            <div class="mb-3 mt-3">
                 <label for="details">Detalles:</label>
-                <textarea class="form-control" rows="5" id="details" name="details"></textarea>
+                <textarea th:field="*{details}" class="form-control" rows="5" maxlength=200 id="details" name="details"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Enviar</button>
+            <button type="reset" class="btn btn-secondary">Limpiar</button>
         </form>
     </div>
 </body>

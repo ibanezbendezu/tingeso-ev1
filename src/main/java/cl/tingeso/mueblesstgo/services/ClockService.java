@@ -7,8 +7,10 @@ import cl.tingeso.mueblesstgo.repositories.WorkedDayRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
 import java.io.IOException;
@@ -74,7 +76,8 @@ public class ClockService {
             while (scan.hasNext()) {
                 String[] mark = scan.nextLine().split(";");
 
-                EmployeeEntity employee = employeeRepository.findByRut(mark[2]);
+                EmployeeEntity employee = employeeRepository.findByRut(mark[2])
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró empleado"));
 
                 if (Objects.nonNull(employee)) {
                     String rut = mark[2];

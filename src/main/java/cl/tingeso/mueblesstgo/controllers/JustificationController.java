@@ -1,30 +1,49 @@
 package cl.tingeso.mueblesstgo.controllers;
 
+import cl.tingeso.mueblesstgo.entities.JustificationEntity;
 import cl.tingeso.mueblesstgo.services.JustificationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Map;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping
+@RequestMapping("justification")
 public class JustificationController {
 
-    @Autowired
-    JustificationService justificationService;
+    private final JustificationService justificationService;
 
-    @GetMapping("/provide-justification")
-    public String upload() {
+    public JustificationController(JustificationService justificationService) {
+        this.justificationService = justificationService;
+    }
+
+    @GetMapping
+    public String justificationForm(Model model) {
+        model.addAttribute("justification", new JustificationEntity());
         return "pages/provide-justification";
     }
 
-    @PostMapping("/save-justification")
-    public String save(@RequestParam Map<String,String> allParams){
-        justificationService.saveJustification(allParams);
-        return "redirect:/provide-justification";
+    @PostMapping
+    public String justificationSubmit(@ModelAttribute JustificationEntity justification, Model model) {
+        try {
+            model.addAttribute("justification", justificationService.saveJustification(justification));
+            return "pages/justification-result";
+        } catch (Exception e) {
+            model.addAttribute("justification", justification);
+            model.addAttribute("error", "El rut ingresado no existe.");
+            return "pages/provide-justification";
+        }
     }
+
+    //@PostMapping
+    /*
+    public String justificationSubmit2(@ModelAttribute JustificationEntity justification, Model model) {
+        String errMessage = justificationService.isValid(justification);
+        if (errMessage != null) {
+            model.addAttribute("justification", justification);
+            model.addAttribute("error", errMessage);
+            return "pages/provide-justification";
+        }
+        model.addAttribute("justification", justificationService.saveJustification(justification));
+        return "pages/justification-result";
+    }*/
 }

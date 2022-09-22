@@ -1,6 +1,7 @@
 package cl.tingeso.mueblesstgo.entities;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -23,7 +24,11 @@ public class EmployeeEntity {
     private String rut;
     private String last_names;
     private String first_names;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birth_date;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate hire_date;
 
     @OneToOne(fetch = FetchType.LAZY)

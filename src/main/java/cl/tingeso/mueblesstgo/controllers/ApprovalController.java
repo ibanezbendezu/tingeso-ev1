@@ -1,30 +1,37 @@
 package cl.tingeso.mueblesstgo.controllers;
 
+import cl.tingeso.mueblesstgo.entities.ApprovalEntity;
 import cl.tingeso.mueblesstgo.services.ApprovalService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.Map;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @Controller
-@RequestMapping
+@RequestMapping("approval")
 public class ApprovalController {
 
-    @Autowired
-    ApprovalService approvalService;
+    private final ApprovalService approvalService;
 
-    @GetMapping("/provide-approval")
-    public String upload() {
+    public ApprovalController(ApprovalService approvalService) {
+        this.approvalService = approvalService;
+    }
+
+    @GetMapping
+    public String approvalForm(Model model) {
+        model.addAttribute("approval", new ApprovalEntity());
         return "pages/provide-approval";
     }
 
-    @PostMapping("/save-approval")
-    public String save(@RequestParam Map<String,String> allParams){
-        approvalService.saveApproval(allParams);
-        return "redirect:/provide-approval";
+    @PostMapping
+    public String approvalSubmit(@ModelAttribute ApprovalEntity approval, Model model) {
+        try {
+            model.addAttribute("approval", approvalService.saveApproval(approval));
+            return "pages/approval-result";
+        } catch (Exception e) {
+            model.addAttribute("approval", approval);
+            model.addAttribute("error", "El rut ingresado no existe.");
+            return "pages/provide-approval";
+        }
     }
 }

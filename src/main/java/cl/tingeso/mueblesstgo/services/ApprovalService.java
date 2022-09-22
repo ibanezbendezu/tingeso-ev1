@@ -1,46 +1,29 @@
 package cl.tingeso.mueblesstgo.services;
 
-import cl.tingeso.mueblesstgo.entities.EmployeeEntity;
 import cl.tingeso.mueblesstgo.entities.ApprovalEntity;
-import cl.tingeso.mueblesstgo.repositories.EmployeeRepository;
+import cl.tingeso.mueblesstgo.entities.EmployeeEntity;
 import cl.tingeso.mueblesstgo.repositories.ApprovalRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import cl.tingeso.mueblesstgo.repositories.EmployeeRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
-import java.util.Objects;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class ApprovalService {
-    @Autowired
-    ApprovalRepository approvalRepository;
-    @Autowired
-    EmployeeRepository employeeRepository;
 
-    private final Logger logg = LoggerFactory.getLogger(ApprovalService.class);
+    private final ApprovalRepository approvalRepository;
+    private final EmployeeRepository employeeRepository;
 
-    public void saveApproval(Map request) {
-        if (!request.isEmpty()) {
-            EmployeeEntity employee = employeeRepository.findByRut(request.get("rut").toString());
+    public ApprovalService(ApprovalRepository approvalRepository, EmployeeRepository employeeRepository) {
+        this.approvalRepository = approvalRepository;
+        this.employeeRepository = employeeRepository;
+    }
 
-            if (Objects.nonNull(employee)) {
-                ApprovalEntity newJust = new ApprovalEntity();
-                newJust.setEmployee(employee);
+    public ApprovalEntity saveApproval(ApprovalEntity approval) {
+        EmployeeEntity employee = this.employeeRepository.findByRut(approval.getEmployee_rut())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró sueldo"));
 
-                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                LocalDate date = LocalDate.parse(request.get("date").toString(), dateFormatter);
-
-                newJust.setApproval_date(date);
-                newJust.setEmployee_rut(request.get("rut").toString());
-                newJust.setDetails(request.get("details").toString());
-
-                approvalRepository.save(newJust);
-            }
-            logg.info("data saved");
-        }
+        approval.setEmployee(employee);
+        return  approvalRepository.save(approval);
     }
 }

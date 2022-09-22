@@ -1,8 +1,6 @@
 package cl.tingeso.mueblesstgo.controllers;
 
-import cl.tingeso.mueblesstgo.services.EmployeeService;
 import cl.tingeso.mueblesstgo.services.WageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +9,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("wage")
 public class WageController {
 
-    @Autowired
-    WageService wageService;
-    @Autowired
-    EmployeeService employeeService;
+    private final WageService wageService;
+
+    public WageController(WageService wageService) {
+        this.wageService = wageService;
+    }
 
     @GetMapping("{id}")
     public String showById(@PathVariable Long id, Model model){
@@ -22,9 +21,18 @@ public class WageController {
         return "pages/wage";
     }
 
-    @GetMapping("/search-wage")
-    public String searchByRut(@RequestParam("rut") String rut){
-        Long id = employeeService.obtenerPorRut(rut).getId();
-        return "redirect:/wage/" + id;
+    @GetMapping("/search")
+    public String getWageSearch() { return "pages/search-wage"; }
+
+    @GetMapping("/find")
+    public String searchByRutAndDate(@RequestParam("rut") String rut,
+                                     @RequestParam("month") String month, Model model) {
+        try {
+            Long id = wageService.findByEmployeeIdAndDate(rut, month);
+            return "redirect:" + id;
+        } catch (Exception e) {
+            model.addAttribute("error", "El sueldo buscado no se encuentra registrado.");
+            return "pages/search-wage";
+        }
     }
 }

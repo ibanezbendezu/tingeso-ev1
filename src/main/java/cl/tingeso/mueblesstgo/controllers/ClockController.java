@@ -1,7 +1,6 @@
 package cl.tingeso.mueblesstgo.controllers;
 
 import cl.tingeso.mueblesstgo.services.ClockService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,8 +12,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class ClockController {
 
-    @Autowired
-    private ClockService upload;
+    private final ClockService clockService;
+
+    public ClockController(ClockService clockService) {
+        this.clockService = clockService;
+    }
 
     @GetMapping("/upload-clock")
     public String upload() {
@@ -23,8 +25,13 @@ public class ClockController {
 
     @PostMapping("/save-clock")
     public String save(@RequestParam("file") MultipartFile file, RedirectAttributes ms) {
-        upload.saveClock(file);
-        ms.addFlashAttribute("mensaje", "Archivo guardado correctamente!!");
-        return "redirect:/upload-clock";
+        try {
+            this.clockService.saveClock(file);
+            ms.addFlashAttribute("success", "Archivo guardado correctamente!!");
+            return "pages/upload-clock";
+        } catch (Exception e) {
+            ms.addFlashAttribute("error", "Error al guardar el archivo.");
+            return "pages/upload-clock";
+        }
     }
 }

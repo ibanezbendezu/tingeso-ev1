@@ -15,6 +15,13 @@
                 <input type="file" class="form-control" name="file">
             </div>
             <button type="submit" class="btn btn-primary">Enviar</button>
+
+            <div class="mb-3 mt-3" th:if="${error}">
+                <div class="text-danger" th:text="${error}"></div>
+            </div>
+            <div class="mb-3 mt-3" th:if="${success}">
+                <div class="text-success" th:text="${success}"></div>
+            </div>
         </form>
     </div>
 </body>
