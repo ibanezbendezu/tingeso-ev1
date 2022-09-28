@@ -23,10 +23,10 @@ public class WorkedDayEntity {
     private Long id;
 
     private LocalDate date;
-    private LocalTime clock_in;
-    private LocalTime clock_out;
+    private LocalTime clockIn;
+    private LocalTime clockOut;
     private Double overtime;
-    private Long minutes_late;
+    private Long minutesLate;
 
     @ManyToOne
     @JoinColumn(name = "employee_id")

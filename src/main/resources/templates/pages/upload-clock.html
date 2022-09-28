@@ -9,7 +9,7 @@
 <body>
     <div th:replace="fragments/navigation :: navigation"></div>
     <div class="container mt-5 mb-5">
-        <h5 class="fw-bold mb-2">Subir Reloj</h5>
+        <h5 class="fw-bold mb-2">Subir Reloj (archivo DATA.txt)</h5>
         <form th:action="@{/save-clock}" method="post" enctype="multipart/form-data">
             <div class="mb-3 mt-3">
                 <input type="file" class="form-control" name="file">

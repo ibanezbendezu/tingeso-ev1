@@ -22,5 +22,5 @@ public class CategoryEntity {
     private Long id;
 
     private Character type;
-    private Long fixed_monthly_wage;
+    private Long fixedMonthlyWage;
 }

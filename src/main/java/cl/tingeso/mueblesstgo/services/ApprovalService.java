@@ -19,8 +19,8 @@ public class ApprovalService {
         this.employeeRepository = employeeRepository;
     }
 
-    public ApprovalEntity saveApproval(ApprovalEntity approval) {
-        EmployeeEntity employee = this.employeeRepository.findByRut(approval.getEmployee_rut())
+    public ApprovalEntity saveApproval(ApprovalEntity approval, String rut) {
+        EmployeeEntity employee = this.employeeRepository.findByRut(rut)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró sueldo"));
 
         approval.setEmployee(employee);

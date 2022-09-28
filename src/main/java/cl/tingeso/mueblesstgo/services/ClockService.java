@@ -4,8 +4,6 @@ import cl.tingeso.mueblesstgo.entities.EmployeeEntity;
 import cl.tingeso.mueblesstgo.entities.WorkedDayEntity;
 import cl.tingeso.mueblesstgo.repositories.EmployeeRepository;
 import cl.tingeso.mueblesstgo.repositories.WorkedDayRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,29 +36,29 @@ public class ClockService {
 
     @Autowired
     HRMService hrmService;
-    @Autowired
-    WorkedDayRepository workedDayRepository;
-    @Autowired
-    EmployeeRepository employeeRepository;
 
-    private final Logger logg = LoggerFactory.getLogger(ClockService.class);
+    private final WorkedDayRepository workedDayRepository;
+    private final EmployeeRepository employeeRepository;
 
-    public void saveClock(MultipartFile file) {
-        if (!file.isEmpty()) {
+    public ClockService(WorkedDayRepository workedDayRepository, EmployeeRepository employeeRepository) {
+        this.workedDayRepository = workedDayRepository;
+        this.employeeRepository = employeeRepository;
+    }
+
+    public boolean saveClock(MultipartFile file) {
+        if (!file.isEmpty() & Objects.equals(file.getOriginalFilename(), "DATA.txt")) {
             try {
                 byte[] bytes = file.getBytes();
                 String folder = "files//";
                 Path path = Paths.get(folder + file.getOriginalFilename());
                 Files.write(path, bytes);
-                logg.info("file saved");
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            loadClock();
-            this.hrmService.generateWages();
+            return true;
         }
+        return false;
     }
 
     public void loadClock() {
@@ -91,37 +90,35 @@ public class ClockService {
                     WorkedDayEntity workedDay = workedDaysByRut.get(key);
                     workedDay.setEmployee(employee);
                     workedDay.setDate(date);
-                    if (workedDay.getClock_in() == null) {
-                        workedDay.setClock_in(time);
+                    if (workedDay.getClockIn() == null) {
+                        workedDay.setClockIn(time);
                     } else {
-                        if (time.compareTo(workedDay.getClock_in()) < 0) {
-                            LocalTime aux = workedDay.getClock_in();
-                            workedDay.setClock_in(time);
-                            workedDay.setClock_out(aux);
+                        if (time.compareTo(workedDay.getClockIn()) < 0) {
+                            LocalTime aux = workedDay.getClockIn();
+                            workedDay.setClockIn(time);
+                            workedDay.setClockOut(aux);
                         } else {
-                            workedDay.setClock_out(time);
+                            workedDay.setClockOut(time);
                         }
                     }
                 }
 
                 workedDaysByRut.values().stream()
-                        .filter(d -> d.getClock_out() != null)
-                        .filter(d -> d.getClock_in().compareTo(MAX_ENTRY_TIME_ACCEPTED) <= 0)
+                        .filter(d -> d.getClockOut() != null)
+                        .filter(d -> d.getClockIn().compareTo(MAX_ENTRY_TIME_ACCEPTED) <= 0)
                         .forEach(d -> {
-                            if (d.getClock_out().compareTo(MAX_REGULAR_WORKING_TIME) > 0) {
-                                d.setOvertime(MINUTES.between(MAX_REGULAR_WORKING_TIME, d.getClock_out()) / 60.0);
+                            if (d.getClockOut().compareTo(MAX_REGULAR_WORKING_TIME) > 0) {
+                                d.setOvertime(MINUTES.between(MAX_REGULAR_WORKING_TIME, d.getClockOut()) / 60.0);
                             } else { d.setOvertime(0.0); }
 
-                            if (d.getClock_in().compareTo(ENTRY_TIME) > 0) {
-                                d.setMinutes_late(MINUTES.between(ENTRY_TIME, d.getClock_in()));
-                            } else { d.setMinutes_late(0L); }
+                            if (d.getClockIn().compareTo(ENTRY_TIME) > 0) {
+                                d.setMinutesLate(MINUTES.between(ENTRY_TIME, d.getClockIn()));
+                            } else { d.setMinutesLate(0L); }
 
                             workedDayRepository.save(d);
                         });
             }
-            logg.info("data saved");
-        } catch (IOException e) {
-            System.err.println("error reading marks from file " + filename);
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }

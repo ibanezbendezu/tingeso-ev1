@@ -24,9 +24,9 @@ public class ApprovalController {
     }
 
     @PostMapping
-    public String approvalSubmit(@ModelAttribute ApprovalEntity approval, Model model) {
+    public String approvalSubmit(@ModelAttribute ApprovalEntity approval, @RequestParam("rut") String rut, Model model) {
         try {
-            model.addAttribute("approval", approvalService.saveApproval(approval));
+            model.addAttribute("approval", approvalService.saveApproval(approval, rut));
             return "pages/approval-result";
         } catch (Exception e) {
             model.addAttribute("approval", approval);

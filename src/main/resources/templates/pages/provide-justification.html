@@ -13,7 +13,7 @@
         <form action="#" th:action="@{/justification/}" th:object="${justification}" method="post">
             <div class="mb-3 mt-3">
                 <label for="rut">Rut Empleado</label>
-                <input required type="text" th:field="*{employee_rut}" class="form-control" id="rut" placeholder="Ingresa tu rut"/>
+                <input required type="text" name="rut" class="form-control" id="rut" placeholder="Ingresa rut del empleado"/>
             </div>
             <div th:if="${error}">
                 <div class="text-danger" th:text="${error}"></div>
@@ -21,7 +21,7 @@
 
             <div class="mb-3 mt-3">
                 <label for="date">Fecha</label>
-                <input required type="date" th:field="*{justification_date}" class="form-control" id="date">
+                <input required type="date" th:field="*{justificationDate}" class="form-control" id="date">
             </div>
             <div class="mb-3 mt-3">
                 <label for="details">Detalles:</label>

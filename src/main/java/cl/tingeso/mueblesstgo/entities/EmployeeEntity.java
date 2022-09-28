@@ -22,25 +22,25 @@ public class EmployeeEntity {
     private Long id;
 
     private String rut;
-    private String last_names;
-    private String first_names;
+    private String lastNames;
+    private String firstNames;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate birth_date;
+    private LocalDate birthDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate hire_date;
+    private LocalDate hireDate;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity category;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
-    private List<WorkedDayEntity> worked_days;
+    private List<WorkedDayEntity> workedDays;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
-    private List<JustificationEntity> absence_justification;
+    private List<JustificationEntity> absenceJustification;
 
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
-    private List<ApprovalEntity> overtime_approval;
+    private List<ApprovalEntity> overtimeApproval;
 }

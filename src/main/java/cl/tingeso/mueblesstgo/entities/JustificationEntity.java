@@ -20,11 +20,10 @@ public class JustificationEntity {
     private Long id;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate justification_date;
+    private LocalDate justificationDate;
 
     private String details;
     private Boolean status;
-    private String employee_rut;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false)

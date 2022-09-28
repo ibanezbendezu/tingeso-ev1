@@ -20,8 +20,8 @@ public class JustificationService {
         this.employeeRepository = employeeRepository;
     }
 
-    public JustificationEntity saveJustification(JustificationEntity justification) {
-        EmployeeEntity employee = this.employeeRepository.findByRut(justification.getEmployee_rut())
+    public JustificationEntity saveJustification(JustificationEntity justification, String rut) {
+        EmployeeEntity employee = this.employeeRepository.findByRut(rut)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró sueldo"));
 
         justification.setEmployee(employee);

@@ -32,7 +32,6 @@ CREATE TABLE overtime_approval
      id int PRIMARY KEY UNIQUE NOT NULL AUTO_INCREMENT,
      approval_date date NOT NULL,
      details varchar(200),
-     employee_rut varchar(30) NOT NULL,
      employee_id int NOT NULL,
      FOREIGN KEY(employee_id) REFERENCES bdtemp1.employee(id)
 );
@@ -43,7 +42,6 @@ CREATE TABLE absence_justification
     justification_date date NOT NULL,
     details varchar(200),
     status bool,
-    employee_rut varchar(30) NOT NULL,
     employee_id int NOT NULL,
     FOREIGN KEY(employee_id) REFERENCES bdtemp1.employee(id)
 );
@@ -112,8 +110,8 @@ VALUES ('14.707.441-7', 'Ibanez Bendezu', 'Aaron Andre', '1996-01-29', '2022-09-
        ('6.591.049-7', 'Gonzalez Reyes', 'Boris Leonardo', '1952-11-03', '1987-04-22',
         (SELECT id FROM bdtemp1.category WHERE type = 'C'));
 
-INSERT INTO overtime_approval(approval_date, employee_rut, employee_id)
-VALUES ('2022-09-17', '14.707.441-7', 1);
+INSERT INTO overtime_approval(approval_date, details, employee_id)
+VALUES ('2022-09-17', 'approval', 1);
 
-INSERT INTO absence_justification(justification_date, employee_rut, employee_id)
-VALUES ('2022-09-05', '6.591.049-7', 2);
+INSERT INTO absence_justification(justification_date, details, status, employee_id)
+VALUES ('2022-09-05', 'justification', true, 2);

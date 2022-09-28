@@ -23,9 +23,9 @@ public class JustificationController {
     }
 
     @PostMapping
-    public String justificationSubmit(@ModelAttribute JustificationEntity justification, Model model) {
+    public String justificationSubmit(@ModelAttribute JustificationEntity justification, @RequestParam("rut") String rut, Model model) {
         try {
-            model.addAttribute("justification", justificationService.saveJustification(justification));
+            model.addAttribute("justification", justificationService.saveJustification(justification, rut));
             return "pages/justification-result";
         } catch (Exception e) {
             model.addAttribute("justification", justification);

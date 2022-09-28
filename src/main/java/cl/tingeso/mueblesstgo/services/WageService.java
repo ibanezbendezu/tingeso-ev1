@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,14 +46,47 @@ public class WageService {
         if (withEmployee) {
             EmployeeVo employeeVo = new EmployeeVo();
             employeeVo.setId(wage.getEmployee().getId());
-            employeeVo.setName(wage.getEmployee().getFirst_names() + " " + wage.getEmployee().getLast_names());
+            employeeVo.setName(wage.getEmployee().getFirstNames() + " " + wage.getEmployee().getLastNames());
             employeeVo.setRut(wage.getEmployee().getRut());
             employeeVo.setCategory(wage.getEmployee().getCategory().getType());
-            employeeVo.setService_years((int) hrmService.serviceYears(wage.getEmployee().getHire_date()));
+            employeeVo.setServiceYears((int) hrmService.serviceYears(wage.getEmployee()));
             vo.setEmployee(employeeVo);
         }
         return vo;
     }
+
+    public List<WageVo> getWages(){
+        List<WageEntity> wages = wageRepository.findAll();
+
+        List<WageVo> wagesVo = new ArrayList<>();
+
+        for (WageEntity wage : wages) {
+            WageVo vo = new WageVo();
+            vo.setId(wage.getId());
+            vo.setDate(wage.getDate());
+            vo.setDetail(wage.getDetail().stream().map(wd -> {
+                WageDetailVo detailVo = new WageDetailVo();
+                detailVo.setId(wd.getId());
+                detailVo.setName(wd.getName());
+                detailVo.setType(wd.getType());
+                detailVo.setAmount(wd.getAmount());
+                return detailVo;
+            }).collect(Collectors.toList()));
+
+            EmployeeVo employeeVo = new EmployeeVo();
+            employeeVo.setId(wage.getEmployee().getId());
+            employeeVo.setName(wage.getEmployee().getFirstNames() + " " + wage.getEmployee().getLastNames());
+            employeeVo.setRut(wage.getEmployee().getRut());
+            employeeVo.setCategory(wage.getEmployee().getCategory().getType());
+            employeeVo.setServiceYears((int) hrmService.serviceYears(wage.getEmployee()));
+            vo.setEmployee(employeeVo);
+
+            wagesVo.add(vo);
+        }
+
+        return wagesVo;
+    }
+
 
     public Long findByEmployeeIdAndDate(String employeeRut, String month) {
         try {
