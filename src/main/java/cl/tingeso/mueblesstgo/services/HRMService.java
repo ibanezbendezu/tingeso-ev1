@@ -183,7 +183,7 @@ public class HRMService {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //SUELDO
-    public WageEntity createWage(EmployeeEntity employee) {
+    public void createWage(EmployeeEntity employee) {
 
         List<WorkedDayEntity> workedDays = employee.getWorkedDays();
         YearMonth yearMonth = YearMonth.from(workedDays.get(workedDays.size() - 1).getDate());
@@ -292,8 +292,6 @@ public class HRMService {
             net_pay.setAmount(grossWage.getAmount().subtract(pensionContribution.getAmount().add(healthContribution.getAmount())));
             this.wageDetailRepository.save(net_pay);
         }
-
-        return newWage;
     }
 
     public void generateWages() {
