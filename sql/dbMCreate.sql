@@ -115,7 +115,7 @@ VALUES ('14.707.441-7', 'Ibanez Bendezu', 'Aaron Andre', '1996-01-29', '2022-09-
         (SELECT id FROM db.category WHERE type = 'C'));
 
 INSERT INTO overtime_approval(approval_date, details, employee_id)
-VALUES ('2022-09-17', 'approval', 1);
+VALUES ('2022-10-17', 'approval', 1);
 
 INSERT INTO absence_justification(justification_date, details, status, employee_id)
-VALUES ('2022-09-05', 'justification', true, 2);
+VALUES ('2022-10-05', 'justification', true, 2);

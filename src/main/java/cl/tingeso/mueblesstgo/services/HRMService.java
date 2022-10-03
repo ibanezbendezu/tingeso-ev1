@@ -219,7 +219,7 @@ public class HRMService {
             overtimeBonus.setWage(newWage);
             overtimeBonus.setType(DetailType.POSITIVE_NI);
             if (employee.getOvertimeApproval().stream()
-                    .filter(a -> newWage.getDate().getMonth().equals(a.getApprovalDate().getMonth()))
+                    .filter(a -> workedDays.get(workedDays.size() - 1).getDate().getMonth().equals(a.getApprovalDate().getMonth()))
                     .findAny()
                     .orElse(null) != null ) {
 
@@ -245,7 +245,7 @@ public class HRMService {
             absenceDiscount.setWage(newWage);
             absenceDiscount.setType(DetailType.NEGATIVE_NI);
             if (employee.getAbsenceJustification().stream()
-                    .filter(j -> newWage.getDate().getMonth().equals(j.getJustificationDate().getMonth()))
+                    .filter(j -> workedDays.get(workedDays.size() - 1).getDate().getMonth().equals(j.getJustificationDate().getMonth()))
                     .filter(j -> j.getStatus().equals(Boolean.TRUE))
                     .findAny()
                     .orElse(null) == null ) {
