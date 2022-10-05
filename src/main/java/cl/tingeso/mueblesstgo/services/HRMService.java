@@ -29,39 +29,6 @@ public class HRMService {
 
     // Calcula descuento según minutos de atraso.
     // > 10: 1%, > 25: 3%, >= 45: 6%
-    /*
-    public double lateDiscount(EmployeeEntity employee, YearMonth yearMonth) {
-
-        double lateDiscount = 0;
-
-        if (employee.getWorkedDays() != null) {
-
-            List<WorkedDayEntity> monthWorkedDays = employee.getWorkedDays().stream()
-                    .filter(wd -> wd.getDate().getMonth() == yearMonth.getMonth())
-                    .filter(wd -> wd.getDate().getYear() == yearMonth.getYear())
-                    .toList();
-
-            long fixedMonthlyWage = employee.getCategory().getFixedMonthlyWage();
-
-            for (WorkedDayEntity monthWorkedDay : monthWorkedDays) {
-                if (monthWorkedDay.getMinutesLate() > 10 &
-                        monthWorkedDay.getMinutesLate() <= 25) {
-                    lateDiscount = lateDiscount + (fixedMonthlyWage * 0.01);
-                } else if (monthWorkedDay.getMinutesLate() > 25 &
-                        monthWorkedDay.getMinutesLate() <= 45) {
-                    lateDiscount = lateDiscount + (fixedMonthlyWage * 0.03);
-                } else if (monthWorkedDay.getMinutesLate() > 45) {
-                    lateDiscount = lateDiscount + (fixedMonthlyWage * 0.06);
-                }
-            }
-        } else {
-            return lateDiscount;
-        }
-
-        return lateDiscount;
-    }*/
-
-
     public double lateDiscount(EmployeeEntity employee, YearMonth yearMonth) {
 
         double lateDiscount = 0;
@@ -165,13 +132,13 @@ public class HRMService {
 
         double serviceYearsBonus = 0;
 
-        if (serviceYears >= 5 & serviceYears < 10) {
+        if (serviceYears >= 5 && serviceYears < 10) {
             serviceYearsBonus = employee.getCategory().getFixedMonthlyWage() * 0.05;
-        } else if (serviceYears >= 10 & serviceYears < 15) {
+        } else if (serviceYears >= 10 && serviceYears < 15) {
             serviceYearsBonus = employee.getCategory().getFixedMonthlyWage() * 0.08;
-        } else if (serviceYears >= 15 & serviceYears < 20) {
+        } else if (serviceYears >= 15 && serviceYears < 20) {
             serviceYearsBonus = employee.getCategory().getFixedMonthlyWage() * 0.11;
-        } else if (serviceYears >= 20 & serviceYears < 25) {
+        } else if (serviceYears >= 20 && serviceYears < 25) {
             serviceYearsBonus = employee.getCategory().getFixedMonthlyWage() * 0.14;
         } else if (serviceYears >= 25) {
             serviceYearsBonus = employee.getCategory().getFixedMonthlyWage() * 0.17;

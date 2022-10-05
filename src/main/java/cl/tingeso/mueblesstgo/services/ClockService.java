@@ -38,7 +38,7 @@ public class ClockService {
 
     public boolean loadClock(MultipartFile multipartFile) {
 
-        if (!multipartFile.isEmpty() & Objects.equals(multipartFile.getOriginalFilename(), "DATA.txt")) {
+        if (!multipartFile.isEmpty() && Objects.equals(multipartFile.getOriginalFilename(), "DATA.txt")) {
 
             try {
                 HashMap<String, WorkedDayEntity> workedDaysByRut = new HashMap<>();

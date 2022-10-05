@@ -33,17 +33,4 @@ public class JustificationController {
             return "pages/provide-justification";
         }
     }
-
-    //@PostMapping
-    /*
-    public String justificationSubmit2(@ModelAttribute JustificationEntity justification, Model model) {
-        String errMessage = justificationService.isValid(justification);
-        if (errMessage != null) {
-            model.addAttribute("justification", justification);
-            model.addAttribute("error", errMessage);
-            return "pages/provide-justification";
-        }
-        model.addAttribute("justification", justificationService.saveJustification(justification));
-        return "pages/justification-result";
-    }*/
 }

@@ -5,7 +5,6 @@ import cl.tingeso.mueblesstgo.services.ApprovalService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("approval")

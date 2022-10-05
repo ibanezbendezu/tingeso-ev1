@@ -1,7 +1,6 @@
 package cl.tingeso.mueblesstgo.controllers;
 
 import cl.tingeso.mueblesstgo.controllers.model.WageVo;
-import cl.tingeso.mueblesstgo.entities.WageEntity;
 import cl.tingeso.mueblesstgo.services.WageService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

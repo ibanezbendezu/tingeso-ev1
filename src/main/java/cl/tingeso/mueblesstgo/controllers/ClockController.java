@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-
-
 @Controller
 public class ClockController {
 
@@ -29,7 +26,7 @@ public class ClockController {
     }
 
     @PostMapping("/save-clock")
-    public String save(@RequestParam("file") MultipartFile file, RedirectAttributes ms) throws IOException {
+    public String save(@RequestParam("file") MultipartFile file, RedirectAttributes ms){
         if (this.clockService.loadClock(file)) {
             try {
                 this.hrmService.generateWages();
